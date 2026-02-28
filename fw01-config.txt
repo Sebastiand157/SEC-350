@@ -1,0 +1,25 @@
+set nat source rule 10 outbound-interface name 'eth0'
+set nat source rule 10 source address '172.16.50.0/29'
+set nat source rule 10 translation address 'masquerade'
+set nat source rule 20 description 'NAT FROM LAN TO WAN'
+set nat source rule 20 outbound-interface name 'eth0'
+set nat source rule 20 source address '172.16.150.0/24'
+set nat source rule 20 translation address 'masquerade'
+set nat source rule 30 description 'NAT FROM MGMT TO WAN'
+set nat source rule 30 source address '172.16.150.0/24'
+set nat source rule 30 translation address 'masquerade'
+set nat source rule 40 outbound-interface name 'eth0'
+set nat source rule 40 source address '172.16.200.0/28'
+set nat source rule 40 translation address 'masquerade'
+set protocols rip interface eth2
+set protocols rip network '172.16.50.0/29'
+set protocols static route 0.0.0.0/0 next-hop 10.0.17.2
+set service dns forwarding allow-from '172.16.50.0/29'
+set service dns forwarding allow-from '172.16.150.0/24'
+set service dns forwarding listen-address '172.16.50.2'
+set service dns forwarding listen-address '172.16.150.2'
+set service dns forwarding system
+set service ssh
+set system host-name 'fw01-seb'
+set system name-server '10.0.17.2'
+set system option reboot-on-upgrade-failure '5'
